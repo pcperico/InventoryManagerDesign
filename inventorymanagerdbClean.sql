@@ -3,7 +3,8 @@
 -- Host: localhost    Database: inventorymanagerdb
 -- ------------------------------------------------------
 -- Server version	5.6.25-log
-
+CREATE DATABASE  IF NOT EXISTS `inventorymanagerdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `inventorymanagerdb`;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -28,18 +29,8 @@ CREATE TABLE `branch` (
   `Address` varchar(200) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `branch`
---
-
-LOCK TABLES `branch` WRITE;
-/*!40000 ALTER TABLE `branch` DISABLE KEYS */;
-INSERT INTO `branch` VALUES (1,'Main Branch','San Salvador','22502421');
-/*!40000 ALTER TABLE `branch` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `buy`
@@ -56,18 +47,8 @@ CREATE TABLE `buy` (
   PRIMARY KEY (`Id`),
   KEY `buy_Provider_idx` (`Provider_Id`),
   CONSTRAINT `buy_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `buy`
---
-
-LOCK TABLES `buy` WRITE;
-/*!40000 ALTER TABLE `buy` DISABLE KEYS */;
-INSERT INTO `buy` VALUES (2,1,'2015-11-01 00:00:00','444');
-/*!40000 ALTER TABLE `buy` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `buydetail`
@@ -87,18 +68,8 @@ CREATE TABLE `buydetail` (
   KEY `buy_product_idx` (`Product_Id`),
   CONSTRAINT `buy_buydetail` FOREIGN KEY (`Buy_Id`) REFERENCES `buy` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `buy_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `buydetail`
---
-
-LOCK TABLES `buydetail` WRITE;
-/*!40000 ALTER TABLE `buydetail` DISABLE KEYS */;
-INSERT INTO `buydetail` VALUES (1,2,2,1200,845.25);
-/*!40000 ALTER TABLE `buydetail` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employee`
@@ -127,17 +98,8 @@ CREATE TABLE `employee` (
   KEY `Employee_Status_idx` (`Status_Id`),
   CONSTRAINT `Employee_Branch` FOREIGN KEY (`Branch_Id`) REFERENCES `branch` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Employee_Status` FOREIGN KEY (`Status_Id`) REFERENCES `employeestatus` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employee`
---
-
-LOCK TABLES `employee` WRITE;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employeerole`
@@ -157,17 +119,8 @@ CREATE TABLE `employeerole` (
   KEY `ER_Role_idx` (`RoleId`),
   CONSTRAINT `ER_Employee` FOREIGN KEY (`EmployeeId`) REFERENCES `employee` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ER_Role` FOREIGN KEY (`RoleId`) REFERENCES `role` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employeerole`
---
-
-LOCK TABLES `employeerole` WRITE;
-/*!40000 ALTER TABLE `employeerole` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employeerole` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employeestatus`
@@ -180,17 +133,8 @@ CREATE TABLE `employeestatus` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employeestatus`
---
-
-LOCK TABLES `employeestatus` WRITE;
-/*!40000 ALTER TABLE `employeestatus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employeestatus` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `measurementunit`
@@ -204,18 +148,8 @@ CREATE TABLE `measurementunit` (
   `Name` varchar(100) NOT NULL,
   `Abbreviation` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `measurementunit`
---
-
-LOCK TABLES `measurementunit` WRITE;
-/*!40000 ALTER TABLE `measurementunit` DISABLE KEYS */;
-INSERT INTO `measurementunit` VALUES (1,'Unidad','U'),(2,'Libra','lb'),(3,'Metro','m'),(4,'Botella','bot'),(5,'Metro Cuadrado','m2'),(6,'Litro','lt');
-/*!40000 ALTER TABLE `measurementunit` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `product`
@@ -233,8 +167,6 @@ CREATE TABLE `product` (
   `MeasurementUnit_Id` int(11) NOT NULL,
   `Brand` varchar(150) DEFAULT NULL,
   `Model` varchar(200) DEFAULT NULL,
-  `PriceCost` double DEFAULT NULL,
-  `Stock` double DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `Product_Category_idx` (`ProductCategory_Id`),
   KEY `Product_Provider_idx` (`Provider_Id`),
@@ -242,18 +174,8 @@ CREATE TABLE `product` (
   CONSTRAINT `Product_Category` FOREIGN KEY (`ProductCategory_Id`) REFERENCES `productcategory` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Product_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Product_Unit` FOREIGN KEY (`MeasurementUnit_Id`) REFERENCES `measurementunit` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `product`
---
-
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'Laptop HP 15','Laptop de alto poder de procesamiento',3,2,1,'HP','15-r001la',NULL,NULL),(2,'Workstation Dell  T5500','WorkStation Dell',3,1,1,'Dell','T5500',NULL,NULL),(3,'Tinta color negro','refill tinta color negro',3,3,6,'pajarito','',NULL,NULL),(4,'Camisa Formal manga larga liza','tallas desde s-xl',4,4,1,'Pierre Cardin','',NULL,NULL);
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `productcategory`
@@ -271,16 +193,6 @@ CREATE TABLE `productcategory` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `productcategory`
---
-
-LOCK TABLES `productcategory` WRITE;
-/*!40000 ALTER TABLE `productcategory` DISABLE KEYS */;
-INSERT INTO `productcategory` VALUES (1,'Electrodomesticos','Productos electricos para el hogar'),(2,'Muebles','Productos para sala, comedor, y otros enseres muebles'),(3,'Computadoras y tablets','Computadoras y accesorios, tablets y todo equipo informatico'),(4,'Ropa','Prendas de vestiro para dama,caballeros y niños');
-/*!40000 ALTER TABLE `productcategory` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `provider`
 --
 
@@ -295,18 +207,8 @@ CREATE TABLE `provider` (
   `Address` varchar(200) DEFAULT NULL,
   `Country` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `provider`
---
-
-LOCK TABLES `provider` WRITE;
-/*!40000 ALTER TABLE `provider` DISABLE KEYS */;
-INSERT INTO `provider` VALUES (1,'Dell Computers','Juan Perez','123456789','Los Angeles','ESTADOS UNIDOS'),(2,'HP Computers','Jose Flores','1234567854','Palo Alto','Estados Unidos'),(3,'Digital Solutions','Roberto Garcia','241795633','Chalchuapa','El Salvador'),(4,'Industrias Topaz','Julio Martinez','245644132','San Salvador','El Salvador');
-/*!40000 ALTER TABLE `provider` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `role`
@@ -321,18 +223,8 @@ CREATE TABLE `role` (
   `Description` varchar(250) DEFAULT NULL,
   `Status` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `role`
---
-
-LOCK TABLES `role` WRITE;
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Administrator','Administrador of the system full access',''),(2,'Reporter','Only allowed reports modules',''),(3,'Developer','Developer of the system, full access grant',''),(4,'Tester','QA user, full access grant','');
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -343,4 +235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-25 17:30:32
+-- Dump completed on 2015-11-25  9:14:25
