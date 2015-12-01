@@ -3,8 +3,8 @@
 -- Host: localhost    Database: inventorymanagerdb
 -- ------------------------------------------------------
 -- Server version	5.6.25-log
-CREATE DATABASE  IF NOT EXISTS `inventorymanagerdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `inventorymanagerdb`;
+CREATE DATABASE IF NOT EXISTS InventoryManagerDB;
+USE InventoryManagerDB
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -29,7 +29,7 @@ CREATE TABLE `branch` (
   `Address` varchar(200) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `buy` (
   PRIMARY KEY (`Id`),
   KEY `buy_Provider_idx` (`Provider_Id`),
   CONSTRAINT `buy_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,27 @@ CREATE TABLE `buydetail` (
   KEY `buy_product_idx` (`Product_Id`),
   CONSTRAINT `buy_buydetail` FOREIGN KEY (`Buy_Id`) REFERENCES `buy` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `buy_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `client` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(150) NOT NULL,
+  `LastName` varchar(150) NOT NULL,
+  `BirthDate` datetime NOT NULL,
+  `Gender` varchar(1) NOT NULL,
+  `Phone` varchar(25) DEFAULT NULL,
+  `Address` varchar(200) DEFAULT NULL,
+  `ClientSince` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +118,7 @@ CREATE TABLE `employee` (
   KEY `Employee_Status_idx` (`Status_Id`),
   CONSTRAINT `Employee_Branch` FOREIGN KEY (`Branch_Id`) REFERENCES `branch` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Employee_Status` FOREIGN KEY (`Status_Id`) REFERENCES `employeestatus` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +139,7 @@ CREATE TABLE `employeerole` (
   KEY `ER_Role_idx` (`RoleId`),
   CONSTRAINT `ER_Employee` FOREIGN KEY (`EmployeeId`) REFERENCES `employee` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ER_Role` FOREIGN KEY (`RoleId`) REFERENCES `role` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +153,7 @@ CREATE TABLE `employeestatus` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,6 +167,40 @@ CREATE TABLE `measurementunit` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(100) NOT NULL,
   `Abbreviation` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `movement`
+--
+
+DROP TABLE IF EXISTS `movement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `movement` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Date` date NOT NULL,
+  `NumRef` varchar(100) NOT NULL,
+  `Provider_Id` int(11) DEFAULT NULL,
+  `Client_Id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `movementdetail`
+--
+
+DROP TABLE IF EXISTS `movementdetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `movementdetail` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Movement_Id` int(11) NOT NULL,
+  `Product_Id` int(11) NOT NULL,
+  `Quantity` double NOT NULL DEFAULT '0',
+  `Price` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -167,6 +221,8 @@ CREATE TABLE `product` (
   `MeasurementUnit_Id` int(11) NOT NULL,
   `Brand` varchar(150) DEFAULT NULL,
   `Model` varchar(200) DEFAULT NULL,
+  `PriceCost` double DEFAULT '0',
+  `Stock` double DEFAULT '0',
   PRIMARY KEY (`Id`),
   KEY `Product_Category_idx` (`ProductCategory_Id`),
   KEY `Product_Provider_idx` (`Provider_Id`),
@@ -174,7 +230,7 @@ CREATE TABLE `product` (
   CONSTRAINT `Product_Category` FOREIGN KEY (`ProductCategory_Id`) REFERENCES `productcategory` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Product_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Product_Unit` FOREIGN KEY (`MeasurementUnit_Id`) REFERENCES `measurementunit` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -207,7 +263,7 @@ CREATE TABLE `provider` (
   `Address` varchar(200) DEFAULT NULL,
   `Country` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +279,46 @@ CREATE TABLE `role` (
   `Description` varchar(250) DEFAULT NULL,
   `Status` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sale`
+--
+
+DROP TABLE IF EXISTS `sale`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sale` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `NumRef` varchar(100) NOT NULL,
+  `Date` datetime NOT NULL,
+  `Client_Id` int(11) NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `sale_client_idx` (`Client_Id`),
+  CONSTRAINT `sale_client` FOREIGN KEY (`Client_Id`) REFERENCES `client` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `saledetail`
+--
+
+DROP TABLE IF EXISTS `saledetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `saledetail` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Sale_Id` int(11) NOT NULL,
+  `Product_Id` int(11) NOT NULL,
+  `Quantity` double NOT NULL,
+  `Price` double NOT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `saledetail_product_idx` (`Product_Id`),
+  KEY `saledetail_sale_idx` (`Sale_Id`),
+  CONSTRAINT `saledetail_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `saledetail_sale` FOREIGN KEY (`Sale_Id`) REFERENCES `sale` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -235,4 +330,4 @@ CREATE TABLE `role` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-11-25  9:14:25
+-- Dump completed on 2015-12-01 15:45:30
