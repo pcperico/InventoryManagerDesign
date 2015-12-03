@@ -3,7 +3,8 @@
 -- Host: localhost    Database: inventorymanagerdb
 -- ------------------------------------------------------
 -- Server version	5.6.25-log
-
+CREATE DATABASE IF NOT EXISTS InventoryManagerDB;
+USE InventoryManagerDB
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -24,7 +25,7 @@ DROP TABLE IF EXISTS `branch`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `branch` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) DEFAULT NULL,
+  `Name` varchar(200) DEFAULT NULL,
   `Address` varchar(200) DEFAULT NULL,
   `Phone` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Id`)
@@ -56,7 +57,7 @@ CREATE TABLE `buy` (
   PRIMARY KEY (`Id`),
   KEY `buy_Provider_idx` (`Provider_Id`),
   CONSTRAINT `buy_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +87,7 @@ CREATE TABLE `buydetail` (
   KEY `buy_product_idx` (`Product_Id`),
   CONSTRAINT `buy_buydetail` FOREIGN KEY (`Buy_Id`) REFERENCES `buy` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `buy_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +116,7 @@ CREATE TABLE `client` (
   `Address` varchar(200) DEFAULT NULL,
   `ClientSince` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,6 +125,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
+INSERT INTO `client` VALUES (2,'Guillermo Ernesto','Canales Mancia','1988-10-01 00:00:00','M','','El Trebol, Santa Ana','2015-12-03 00:00:00'),(3,'Kenny Guadalupe','Marroquin de Canales','1987-12-01 00:00:00','F','','El Trebol,Santa Ana','2015-12-03 00:00:00');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +143,7 @@ CREATE TABLE `employee` (
   `LastName` varchar(100) NOT NULL,
   `BirthDate` date NOT NULL,
   `Phone` varchar(20) DEFAULT NULL,
-  `Email` varchar(100) DEFAULT NULL,
+  `Email` varchar(150) DEFAULT NULL,
   `Position` varchar(45) NOT NULL,
   `BeginDate` date NOT NULL,
   `EndDate` date DEFAULT NULL,
@@ -261,7 +263,7 @@ CREATE TABLE `movement` (
   `Provider_Id` int(11) DEFAULT NULL,
   `Client_Id` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +272,7 @@ CREATE TABLE `movement` (
 
 LOCK TABLES `movement` WRITE;
 /*!40000 ALTER TABLE `movement` DISABLE KEYS */;
-INSERT INTO `movement` VALUES (2,'2015-11-01','4545',5,NULL);
+INSERT INTO `movement` VALUES (5,'2015-11-01','454',6,NULL);
 /*!40000 ALTER TABLE `movement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -288,7 +290,7 @@ CREATE TABLE `movementdetail` (
   `Quantity` double NOT NULL DEFAULT '0',
   `Price` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,8 +299,37 @@ CREATE TABLE `movementdetail` (
 
 LOCK TABLES `movementdetail` WRITE;
 /*!40000 ALTER TABLE `movementdetail` DISABLE KEYS */;
-INSERT INTO `movementdetail` VALUES (3,2,7,100,2.5);
+INSERT INTO `movementdetail` VALUES (8,5,8,10,245.32),(9,5,9,10,365.85);
 /*!40000 ALTER TABLE `movementdetail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pricesalehistory`
+--
+
+DROP TABLE IF EXISTS `pricesalehistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pricesalehistory` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Product_Id` int(11) NOT NULL,
+  `PriceSale` double NOT NULL,
+  `BeginDate` datetime NOT NULL,
+  `EndDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `priceSale_Product_idx` (`Product_Id`),
+  CONSTRAINT `priceSale_Product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pricesalehistory`
+--
+
+LOCK TABLES `pricesalehistory` WRITE;
+/*!40000 ALTER TABLE `pricesalehistory` DISABLE KEYS */;
+INSERT INTO `pricesalehistory` VALUES (1,8,285.35,'2015-12-03 00:00:00',NULL),(2,9,415,'2015-12-03 00:00:00',NULL),(3,8,295.35,'2015-12-03 00:00:00',NULL),(4,9,425,'2015-12-03 00:00:00',NULL),(5,9,435,'2015-12-03 00:00:00',NULL),(6,8,285.35,'2015-12-03 00:00:00',NULL),(7,8,285,'2015-12-03 00:00:00',NULL);
+/*!40000 ALTER TABLE `pricesalehistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -310,7 +341,7 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) NOT NULL,
+  `Name` varchar(200) NOT NULL,
   `Description` varchar(100) NOT NULL,
   `ProductCategory_Id` int(11) NOT NULL,
   `Provider_Id` int(11) NOT NULL,
@@ -319,6 +350,7 @@ CREATE TABLE `product` (
   `Model` varchar(200) DEFAULT NULL,
   `PriceCost` double DEFAULT '0',
   `Stock` double DEFAULT '0',
+  `PriceSale` double DEFAULT '0',
   PRIMARY KEY (`Id`),
   KEY `Product_Category_idx` (`ProductCategory_Id`),
   KEY `Product_Provider_idx` (`Provider_Id`),
@@ -326,7 +358,7 @@ CREATE TABLE `product` (
   CONSTRAINT `Product_Category` FOREIGN KEY (`ProductCategory_Id`) REFERENCES `productcategory` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Product_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `Product_Unit` FOREIGN KEY (`MeasurementUnit_Id`) REFERENCES `measurementunit` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -335,7 +367,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (7,'Urea','urea Test',5,5,7,'Fertica','',2.5,100);
+INSERT INTO `product` VALUES (8,'Laptop Asus 10.1\'\'','Procesador intel celeron dual core 1.1 GHz, Ram 2 GB, Hd 320GB, Windows 8 de 64 Bits',5,6,8,'Asus','1015E',245.32,10,285),(9,'Laptop Lenovo  11.6\'\'','Procesador Intel Celeron N2840 2.16 GHz, RAm 4 GB, HD 500 GB, Windows 8.1',5,6,8,'Lenovo','3-1120 Touch',0,0,435),(10,'Equipo de escritorio Dell Optiplex','Procesador Intel Core 2 Duo 1.8 GHz, Ram 1GB, HD 80Gb, Win7',6,7,8,'Dell','Optiplex 745',0,0,0),(11,'Bolson para notebook','Boloson para notebook',7,6,8,'Xpert','XEL104R',0,0,0);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,7 +383,7 @@ CREATE TABLE `productcategory` (
   `Name` varchar(100) NOT NULL,
   `Description` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,7 +392,7 @@ CREATE TABLE `productcategory` (
 
 LOCK TABLES `productcategory` WRITE;
 /*!40000 ALTER TABLE `productcategory` DISABLE KEYS */;
-INSERT INTO `productcategory` VALUES (5,'Fertilizantes','Variedad de fertilizantes');
+INSERT INTO `productcategory` VALUES (5,'Laptops, Netbooks y Tablets','Equipos portatiles de alto rendimiento y uso de hogar y oficina'),(6,'Computadoras de Escritorio','Equipo informatico de escritorio'),(7,'Accesorios y repuestos','Accesorios para equipo informatico portatiles y de escritorio');
 /*!40000 ALTER TABLE `productcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,8 +410,9 @@ CREATE TABLE `provider` (
   `Phone` varchar(25) DEFAULT NULL,
   `Address` varchar(200) DEFAULT NULL,
   `Country` varchar(100) DEFAULT NULL,
+  `Nit` varchar(17) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -388,7 +421,7 @@ CREATE TABLE `provider` (
 
 LOCK TABLES `provider` WRITE;
 /*!40000 ALTER TABLE `provider` DISABLE KEYS */;
-INSERT INTO `provider` VALUES (5,'Fertica El Salvador','Juan Perez','25653231','San Salvador','El Salvador');
+INSERT INTO `provider` VALUES (6,'Digital Solutions','Roberto Garcia','22256532','Chalchuapa','EL SALVADOR','0103-230388-101-0'),(7,'Tecno Express','Mario Jose Cristales','24184145','Turin','El Salvador','0103-220887-101-0'),(8,'Tecno Avance','Juan Perez','22565857','San Salvador','El Salvador','0103-121005-102-1');
 /*!40000 ALTER TABLE `provider` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -401,11 +434,11 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `role` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(25) DEFAULT NULL,
+  `Name` varchar(50) DEFAULT NULL,
   `Description` varchar(250) DEFAULT NULL,
   `Status` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -414,7 +447,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (5,'Administrator','Administrator of the system, full access',''),(6,'Seller','Access only sales module','');
+INSERT INTO `role` VALUES (5,'Administrator','Administrator of the system, full access',''),(6,'Seller','Access only sales module',''),(7,'Queality Assurance (Q.A)','Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocidod','');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -433,7 +466,7 @@ CREATE TABLE `sale` (
   PRIMARY KEY (`Id`),
   KEY `sale_client_idx` (`Client_Id`),
   CONSTRAINT `sale_client` FOREIGN KEY (`Client_Id`) REFERENCES `client` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -463,7 +496,7 @@ CREATE TABLE `saledetail` (
   KEY `saledetail_sale_idx` (`Sale_Id`),
   CONSTRAINT `saledetail_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `saledetail_sale` FOREIGN KEY (`Sale_Id`) REFERENCES `sale` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,4 +517,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-01 17:31:09
+-- Dump completed on 2015-12-03 17:40:03
