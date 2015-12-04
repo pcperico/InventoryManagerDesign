@@ -3,8 +3,7 @@
 -- Host: localhost    Database: inventorymanagerdb
 -- ------------------------------------------------------
 -- Server version	5.6.25-log
-CREATE DATABASE IF NOT EXISTS InventoryManagerDB;
-USE InventoryManagerDB
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -225,6 +224,34 @@ INSERT INTO `employeestatus` VALUES (1,'Active'),(2,'On Hollydays'),(3,'Inactive
 UNLOCK TABLES;
 
 --
+-- Table structure for table `initialinventory`
+--
+
+DROP TABLE IF EXISTS `initialinventory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `initialinventory` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Product_Id` int(11) NOT NULL,
+  `Year` int(11) NOT NULL,
+  `CreationDate` datetime NOT NULL,
+  `Stock` double NOT NULL,
+  `PriceCost` double NOT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `initialinventory`
+--
+
+LOCK TABLES `initialinventory` WRITE;
+/*!40000 ALTER TABLE `initialinventory` DISABLE KEYS */;
+INSERT INTO `initialinventory` VALUES (1,11,2015,'2015-12-04 00:00:00',15,23.65);
+/*!40000 ALTER TABLE `initialinventory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `measurementunit`
 --
 
@@ -263,7 +290,7 @@ CREATE TABLE `movement` (
   `Provider_Id` int(11) DEFAULT NULL,
   `Client_Id` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -272,7 +299,7 @@ CREATE TABLE `movement` (
 
 LOCK TABLES `movement` WRITE;
 /*!40000 ALTER TABLE `movement` DISABLE KEYS */;
-INSERT INTO `movement` VALUES (5,'2015-11-01','454',6,NULL);
+INSERT INTO `movement` VALUES (40,'2015-10-01','1545',6,NULL),(41,'2015-11-02','4dfdsf',6,NULL);
 /*!40000 ALTER TABLE `movement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +317,7 @@ CREATE TABLE `movementdetail` (
   `Quantity` double NOT NULL DEFAULT '0',
   `Price` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -299,7 +326,7 @@ CREATE TABLE `movementdetail` (
 
 LOCK TABLES `movementdetail` WRITE;
 /*!40000 ALTER TABLE `movementdetail` DISABLE KEYS */;
-INSERT INTO `movementdetail` VALUES (8,5,8,10,245.32),(9,5,9,10,365.85);
+INSERT INTO `movementdetail` VALUES (41,40,11,15,23.65),(42,41,11,10,25.32);
 /*!40000 ALTER TABLE `movementdetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +346,7 @@ CREATE TABLE `pricesalehistory` (
   PRIMARY KEY (`Id`),
   KEY `priceSale_Product_idx` (`Product_Id`),
   CONSTRAINT `priceSale_Product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +355,6 @@ CREATE TABLE `pricesalehistory` (
 
 LOCK TABLES `pricesalehistory` WRITE;
 /*!40000 ALTER TABLE `pricesalehistory` DISABLE KEYS */;
-INSERT INTO `pricesalehistory` VALUES (1,8,285.35,'2015-12-03 00:00:00',NULL),(2,9,415,'2015-12-03 00:00:00',NULL),(3,8,295.35,'2015-12-03 00:00:00',NULL),(4,9,425,'2015-12-03 00:00:00',NULL),(5,9,435,'2015-12-03 00:00:00',NULL),(6,8,285.35,'2015-12-03 00:00:00',NULL),(7,8,285,'2015-12-03 00:00:00',NULL);
 /*!40000 ALTER TABLE `pricesalehistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -367,7 +393,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (8,'Laptop Asus 10.1\'\'','Procesador intel celeron dual core 1.1 GHz, Ram 2 GB, Hd 320GB, Windows 8 de 64 Bits',5,6,8,'Asus','1015E',245.32,10,285),(9,'Laptop Lenovo  11.6\'\'','Procesador Intel Celeron N2840 2.16 GHz, RAm 4 GB, HD 500 GB, Windows 8.1',5,6,8,'Lenovo','3-1120 Touch',0,0,435),(10,'Equipo de escritorio Dell Optiplex','Procesador Intel Core 2 Duo 1.8 GHz, Ram 1GB, HD 80Gb, Win7',6,7,8,'Dell','Optiplex 745',0,0,0),(11,'Bolson para notebook','Boloson para notebook',7,6,8,'Xpert','XEL104R',0,0,0);
+INSERT INTO `product` VALUES (8,'Laptop Asus 10.1\'\'','Procesador intel celeron dual core 1.1 GHz, Ram 2 GB, Hd 320GB, Windows 8 de 64 Bits',5,6,8,'Asus','1015E',0,0,285),(9,'Laptop Lenovo  11.6\'\'','Procesador Intel Celeron N2840 2.16 GHz, RAm 4 GB, HD 500 GB, Windows 8.1',5,6,8,'Lenovo','3-1120 Touch',0,0,485.65),(10,'Equipo de escritorio Dell Optiplex','Procesador Intel Core 2 Duo 1.8 GHz, Ram 1GB, HD 80Gb, Win7',6,7,8,'Dell','Optiplex 745',0,0,0),(11,'Bolson para notebook','Boloson para notebook',7,6,8,'Xpert','XEL104R',24.32,25,40.25);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -517,4 +543,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-03 17:40:03
+-- Dump completed on 2015-12-04 16:16:55
