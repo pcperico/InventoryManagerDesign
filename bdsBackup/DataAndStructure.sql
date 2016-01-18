@@ -14,7 +14,8 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
+CREATE DATABASE IF NOT EXISTS InventoryManagerDB;
+USE InventoryManagerDB
 --
 -- Table structure for table `branch`
 --
@@ -39,63 +40,6 @@ LOCK TABLES `branch` WRITE;
 /*!40000 ALTER TABLE `branch` DISABLE KEYS */;
 INSERT INTO `branch` VALUES (2,'Main Branch','San Salvador','25585456');
 /*!40000 ALTER TABLE `branch` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `buy`
---
-
-DROP TABLE IF EXISTS `buy`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `buy` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Provider_Id` int(11) NOT NULL,
-  `Date` datetime NOT NULL,
-  `NumRef` varchar(100) NOT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `buy_Provider_idx` (`Provider_Id`),
-  CONSTRAINT `buy_Provider` FOREIGN KEY (`Provider_Id`) REFERENCES `provider` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `buy`
---
-
-LOCK TABLES `buy` WRITE;
-/*!40000 ALTER TABLE `buy` DISABLE KEYS */;
-/*!40000 ALTER TABLE `buy` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `buydetail`
---
-
-DROP TABLE IF EXISTS `buydetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `buydetail` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Buy_Id` int(11) NOT NULL,
-  `Product_Id` int(11) NOT NULL,
-  `Quantity` double NOT NULL,
-  `Price` double NOT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `buy_buydetail_idx` (`Buy_Id`),
-  KEY `buy_product_idx` (`Product_Id`),
-  CONSTRAINT `buy_buydetail` FOREIGN KEY (`Buy_Id`) REFERENCES `buy` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `buy_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `buydetail`
---
-
-LOCK TABLES `buydetail` WRITE;
-/*!40000 ALTER TABLE `buydetail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `buydetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -239,7 +183,7 @@ CREATE TABLE `initialinventory` (
   `PriceCost` double NOT NULL,
   `Movement_Id` int(11) DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +192,7 @@ CREATE TABLE `initialinventory` (
 
 LOCK TABLES `initialinventory` WRITE;
 /*!40000 ALTER TABLE `initialinventory` DISABLE KEYS */;
-INSERT INTO `initialinventory` VALUES (2,9,2015,'2015-12-10 00:00:00',5,460,42),(3,8,2015,'2015-12-10 00:00:00',10,325.63,42);
+INSERT INTO `initialinventory` VALUES (9,8,2016,'2016-01-18 00:00:00',13,173.99,0),(10,9,2016,'2016-01-18 00:00:00',12,275.65,0),(11,10,2016,'2016-01-18 00:00:00',0,0,0),(12,11,2016,'2016-01-18 00:00:00',15,30.32,0);
 /*!40000 ALTER TABLE `initialinventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -291,7 +235,7 @@ CREATE TABLE `movement` (
   `Provider_Id` int(11) DEFAULT NULL,
   `Client_Id` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -300,7 +244,7 @@ CREATE TABLE `movement` (
 
 LOCK TABLES `movement` WRITE;
 /*!40000 ALTER TABLE `movement` DISABLE KEYS */;
-INSERT INTO `movement` VALUES (42,'2015-11-01','4545dddss',6,NULL),(43,'2015-11-02','454sss',NULL,2),(44,'2015-11-02','4545454',6,NULL),(45,'2015-11-03','45454',NULL,3);
+INSERT INTO `movement` VALUES (5,'2015-01-01','4545',6,NULL),(6,'2015-01-05','45454',6,NULL),(7,'2015-01-06','1212',NULL,2),(8,'2016-01-01','4542121',6,NULL);
 /*!40000 ALTER TABLE `movement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -316,10 +260,10 @@ CREATE TABLE `movementdetail` (
   `Movement_Id` int(11) NOT NULL,
   `Product_Id` int(11) NOT NULL,
   `Quantity` double NOT NULL DEFAULT '0',
-  `Price` double NOT NULL DEFAULT '0',
+  `PriceCost` double NOT NULL DEFAULT '0',
   `PriceSale` double DEFAULT '0',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +272,7 @@ CREATE TABLE `movementdetail` (
 
 LOCK TABLES `movementdetail` WRITE;
 /*!40000 ALTER TABLE `movementdetail` DISABLE KEYS */;
-INSERT INTO `movementdetail` VALUES (43,42,8,10,325.63,0),(44,42,9,5,460,0),(45,43,8,1,325.63,430.56),(46,44,8,4,324.5,0),(47,45,8,2,325.28,425.62);
+INSERT INTO `movementdetail` VALUES (1,5,8,10,175.85,0),(2,5,9,12,275.65,0),(3,5,11,15,30.32,0),(4,6,8,5,170.26,0),(5,7,8,2,173.99,225.26),(6,8,8,5,170.25,0);
 /*!40000 ALTER TABLE `movementdetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +292,7 @@ CREATE TABLE `pricesalehistory` (
   PRIMARY KEY (`Id`),
   KEY `priceSale_Product_idx` (`Product_Id`),
   CONSTRAINT `priceSale_Product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,6 +301,7 @@ CREATE TABLE `pricesalehistory` (
 
 LOCK TABLES `pricesalehistory` WRITE;
 /*!40000 ALTER TABLE `pricesalehistory` DISABLE KEYS */;
+INSERT INTO `pricesalehistory` VALUES (1,8,225.26,'2016-01-13 00:00:00',NULL),(2,9,325.67,'2016-01-13 00:00:00',NULL),(3,10,525.33,'2016-01-13 00:00:00',NULL),(4,11,40.35,'2016-01-13 00:00:00',NULL);
 /*!40000 ALTER TABLE `pricesalehistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +340,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (8,'Laptop Asus 10.1\'\'','Procesador intel celeron dual core 1.1 GHz, Ram 2 GB, Hd 320GB, Windows 8 de 64 Bits',5,6,8,'Asus','1015E',325.28,11,285),(9,'Laptop Lenovo  11.6\'\'','Procesador Intel Celeron N2840 2.16 GHz, RAm 4 GB, HD 500 GB, Windows 8.1',5,6,8,'Lenovo','3-1120 Touch',460,5,485.65),(10,'Equipo de escritorio Dell Optiplex','Procesador Intel Core 2 Duo 1.8 GHz, Ram 1GB, HD 80Gb, Win7',6,7,8,'Dell','Optiplex 745',0,0,0),(11,'Bolson para notebook','Boloson para notebook',7,6,8,'Xpert','XEL104R',0,0,40.25);
+INSERT INTO `product` VALUES (8,'Laptop Asus 10.1\'\'','Procesador intel celeron dual core 1.1 GHz, Ram 2 GB, Hd 320GB, Windows 8 de 64 Bits',5,6,8,'Asus','1015E',172.95,18,225.26),(9,'Laptop Lenovo  11.6\'\'','Procesador Intel Celeron N2840 2.16 GHz, RAm 4 GB, HD 500 GB, Windows 8.1',5,6,8,'Lenovo','3-1120 Touch',275.65,12,325.67),(10,'Equipo de escritorio Dell Optiplex','Procesador Intel Core 2 Duo 1.8 GHz, Ram 1GB, HD 80Gb, Win7',6,7,8,'Dell','Optiplex 745',0,0,525.33),(11,'Bolson para notebook','Boloson para notebook',7,6,8,'Xpert','XEL104R',30.32,15,40.35);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -478,63 +423,6 @@ LOCK TABLES `role` WRITE;
 INSERT INTO `role` VALUES (5,'Administrator','Administrator of the system, full access',''),(6,'Seller','Access only sales module',''),(7,'Queality Assurance (Q.A)','Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocidod','');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sale`
---
-
-DROP TABLE IF EXISTS `sale`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sale` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `NumRef` varchar(100) NOT NULL,
-  `Date` datetime NOT NULL,
-  `Client_Id` int(11) NOT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `sale_client_idx` (`Client_Id`),
-  CONSTRAINT `sale_client` FOREIGN KEY (`Client_Id`) REFERENCES `client` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sale`
---
-
-LOCK TABLES `sale` WRITE;
-/*!40000 ALTER TABLE `sale` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sale` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `saledetail`
---
-
-DROP TABLE IF EXISTS `saledetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `saledetail` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Sale_Id` int(11) NOT NULL,
-  `Product_Id` int(11) NOT NULL,
-  `Quantity` double NOT NULL,
-  `Price` double NOT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `saledetail_product_idx` (`Product_Id`),
-  KEY `saledetail_sale_idx` (`Sale_Id`),
-  CONSTRAINT `saledetail_product` FOREIGN KEY (`Product_Id`) REFERENCES `product` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `saledetail_sale` FOREIGN KEY (`Sale_Id`) REFERENCES `sale` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `saledetail`
---
-
-LOCK TABLES `saledetail` WRITE;
-/*!40000 ALTER TABLE `saledetail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `saledetail` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -545,4 +433,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-12-11 15:22:27
+-- Dump completed on 2016-01-18 16:24:33
